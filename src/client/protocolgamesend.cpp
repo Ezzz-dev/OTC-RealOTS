@@ -63,20 +63,6 @@ void ProtocolGame::sendLoginPacket(uint challengeTimestamp, uint8 challengeRando
     OutputMessagePtr msg(new OutputMessage);
 
     msg->addU8(Proto::ClientPendingGame);
-    msg->addU16(g_game.getOs());
-    msg->addU16(g_game.getCustomProtocolVersion());
-
-    if (g_game.getFeature(Otc::GameClientVersion))
-        msg->addU32(g_game.getClientVersion());
-
-    if (g_game.getFeature(Otc::GameTibia12Protocol) && g_game.getProtocolVersion() >= 1240)
-        msg->addString(std::to_string(g_game.getClientVersion()));
-
-    if (g_game.getFeature(Otc::GameContentRevision))
-        msg->addU16(g_things.getContentRevision());
-
-    if (g_game.getFeature(Otc::GamePreviewState))
-        msg->addU8(0);
 
     int offset = msg->getMessageSize();
     // first RSA byte must be 0
@@ -89,8 +75,23 @@ void ProtocolGame::sendLoginPacket(uint challengeTimestamp, uint8 challengeRando
         msg->addU32(m_xteaKey[1]);
         msg->addU32(m_xteaKey[2]);
         msg->addU32(m_xteaKey[3]);
-        msg->addU8(0); // is gm set?
     }
+
+    msg->addU16(1);
+    msg->addU16(770);
+    msg->addU8(0); // is gm set?
+
+    if (g_game.getFeature(Otc::GameClientVersion))
+        msg->addU32(g_game.getClientVersion());
+
+    if (g_game.getFeature(Otc::GameTibia12Protocol) && g_game.getProtocolVersion() >= 1240)
+        msg->addString(std::to_string(g_game.getClientVersion()));
+
+    if (g_game.getFeature(Otc::GameContentRevision))
+        msg->addU16(g_things.getContentRevision());
+
+    if (g_game.getFeature(Otc::GamePreviewState))
+        msg->addU8(0);
 
     if (g_game.getFeature(Otc::GameSessionKey)) {
         msg->addString(m_sessionKey);
