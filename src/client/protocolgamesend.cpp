@@ -78,7 +78,7 @@ void ProtocolGame::sendLoginPacket(uint challengeTimestamp, uint8 challengeRando
     }
 
     msg->addU16(1);
-    msg->addU16(770);
+    msg->addU16(772);
     msg->addU8(0); // is gm set?
 
     if (g_game.getFeature(Otc::GameClientVersion))
@@ -1153,6 +1153,16 @@ void ProtocolGame::sendWindows()
     for (auto& dll : dlls) {
         msg->addString(dll);
     }
+    send(msg);
+}
+
+void ProtocolGame::sendRefreshTile(int x, int y, int z)
+{
+    OutputMessagePtr msg(new OutputMessage);
+    msg->addU8(Proto::ClientUpdateTile);
+    msg->addU16(x);
+    msg->addU16(y);
+    msg->addU8(z);
     send(msg);
 }
 

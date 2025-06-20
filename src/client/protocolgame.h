@@ -130,6 +130,7 @@ public:
     void sendProcesses();
     void sendDlls();
     void sendWindows();
+    void sendRefreshTile(int x, int y, int z);
 
     // otclient only
     void sendChangeMapAwareRange(int xrange, int yrange);
