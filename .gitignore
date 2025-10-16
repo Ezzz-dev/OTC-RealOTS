@@ -6,6 +6,9 @@ CMakeFiles
 cmake_install.cmake
 Makefile
 /otclient
+vcpkg_installed
+/vc16/otclient/*
+*.tlog
 /*.h
 /*.cxx
 *.o
